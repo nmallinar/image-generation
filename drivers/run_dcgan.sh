@@ -1,10 +1,11 @@
 #!/bin/sh
 
 DATAROOT=/media/WD2TB/neil/data/Humans
-OUTPATH=/media/WD2TB/neil/output
+OUTPATH=/media/WD2TB/neil/dcgan_results
 
-PYTHONPATH=.. ../python3/main.py \
-  --dataset folder \
+PYTHONPATH=.. python main.py \
+  --dry-run \
+  --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \
   --batchSize 64 \

@@ -65,7 +65,7 @@ cudnn.benchmark = True
 if torch.cuda.is_available() and not opt.cuda:
     print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
-dataset = get_default_datasets(opt.dataset, opt.dataroot, opt.imageSize, opt.classes)
+dataset, nc = get_default_datasets(opt.dataset, opt.dataroot, opt.imageSize, opt.classes)
 
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batchSize,
                                          shuffle=True, num_workers=int(opt.workers))
