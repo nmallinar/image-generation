@@ -3,7 +3,7 @@
 DATAROOT=/media/WD2TB/neil/data/Humans
 OUTPATH=/media/WD2TB/neil/dcgan_results/0004
 
-PYTHONPATH=.. python main.py \
+PYTHONPATH=.. python train_dcgan.py \
   --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \

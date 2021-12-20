@@ -90,14 +90,14 @@ def weights_init(m):
         torch.nn.init.zeros_(m.bias)
 
 
-netG = Generator128(nz, ngf, nc, ngpu).to(device)
+netG = Generator64(nz, ngf, nc, ngpu).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 print(netG)
 
 
-netD = Discriminator128(nc, ndf, ngpu).to(device)
+netD = Discriminator64(nc, ndf, ngpu).to(device)
 netD.apply(weights_init)
 if opt.netD != '':
     netD.load_state_dict(torch.load(opt.netD))
