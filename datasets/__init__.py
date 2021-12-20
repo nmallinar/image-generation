@@ -2,7 +2,6 @@ def get_default_datasets(dataset, dataroot, imageSize, classes):
     if dataroot is None and str(dataset).lower() != 'fake':
         raise ValueError("`dataroot` parameter is required for dataset \"%s\"" % dataset)
 
-    dataset = None
     if dataset in ['imagenet', 'folder', 'lfw']:
         # folder dataset
         nc=3
