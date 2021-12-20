@@ -12,6 +12,8 @@ import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data
+import torchvision.datasets as dset
+import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
 from models.dcgan_base import Generator, Discriminator
@@ -36,6 +38,7 @@ parser.add_argument('--netG', default='', help="path to netG (to continue traini
 parser.add_argument('--netD', default='', help="path to netD (to continue training)")
 parser.add_argument('--outf', default='.', help='folder to output images and model checkpoints')
 parser.add_argument('--model-save-freq', dest='model_save_freq', default=10, help='frequency in epochs to save models')
+parser.add_argument('--image-save-freq', dest='image_save_freq', default=100, help='frequency in batches per epoch to save image samples')
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--classes', default='bedroom', help='comma separated list of classes for the lsun data set')
 
@@ -85,7 +88,7 @@ def weights_init(m):
         torch.nn.init.zeros_(m.bias)
 
 
-netG = Generator(nz, ngf, nc, ngpu).to(device)
+netG = Generator(nz, ngf, ngpu).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
@@ -167,8 +170,8 @@ for epoch in range(opt.niter):
 
     # do checkpointing
     if (epoch+1) % opt.model_save_freq == 0:
-        torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (models_outdir, epoch))
-        torch.save(netD.state_dict(), '%s/netD_epoch_%d.pth' % (models_outdir, epoch))
+        torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (models_outdir, epoch+1))
+        torch.save(netD.state_dict(), '%s/netD_epoch_%d.pth' % (models_outdir, epoch+1))
 
-torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir))
-torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir))
+torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir, epoch))
+torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir, epoch))

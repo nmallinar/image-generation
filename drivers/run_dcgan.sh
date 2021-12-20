@@ -1,13 +1,13 @@
 #!/bin/sh
 
 DATAROOT=/media/WD2TB/neil/data/Humans
-OUTPATH=/media/WD2TB/neil/dcgan_results
+OUTPATH=/media/WD2TB/neil/dcgan_results/0001
 
 PYTHONPATH=.. python main.py \
   --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \
-  --batchSize 64 \
+  --batchSize 256 \
   --imageSize 64 \
   --nz 100 \
   --ngf 64 \
@@ -17,4 +17,6 @@ PYTHONPATH=.. python main.py \
   --beta1 0.5 \
   --cuda \
   --ngpu 2 \
-  --outf $OUTPATH
+  --outf $OUTPATH \
+  --model-save-freq 10 \
+  --image-save-freq 20
