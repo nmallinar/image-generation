@@ -24,6 +24,7 @@ parser.add_argument('--dataset', required=True, help='cifar10 | lsun | mnist |im
 parser.add_argument('--dataroot', required=False, help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batchSize', type=int, default=64, help='input batch size')
+parser.add_argument('--sampleBatchSize', type=int, default=64, help='image samples batch size')
 parser.add_argument('--imageSize', type=int, default=64, help='the height / width of the input image to network')
 parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
 parser.add_argument('--ngf', type=int, default=64)
@@ -37,8 +38,8 @@ parser.add_argument('--ngpu', type=int, default=1, help='number of GPUs to use')
 parser.add_argument('--netG', default='', help="path to netG (to continue training)")
 parser.add_argument('--netD', default='', help="path to netD (to continue training)")
 parser.add_argument('--outf', default='.', help='folder to output images and model checkpoints')
-parser.add_argument('--model-save-freq', type=int, dest='model_save_freq', default=10, help='frequency in epochs to save models')
-parser.add_argument('--image-save-freq', type=int, dest='image_save_freq', default=100, help='frequency in batches per epoch to save image samples')
+parser.add_argument('--model-save-freq', dest='model_save_freq', default=10, help='frequency in epochs to save models')
+parser.add_argument('--image-save-freq', dest='image_save_freq', default=100, help='frequency in batches per epoch to save image samples')
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--classes', default='bedroom', help='comma separated list of classes for the lsun data set')
 
@@ -103,7 +104,7 @@ print(netD)
 
 criterion = nn.BCELoss()
 
-fixed_noise = torch.randn(opt.batchSize, nz, 1, 1, device=device)
+fixed_noise = torch.randn(opt.sampleBatchSize, nz, 1, 1, device=device)
 real_label = 1
 fake_label = 0
 
