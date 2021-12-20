@@ -41,10 +41,12 @@ Tried to extend just to 128x128 but the models don't seem to do well on this dat
   - increasing ngf=ndf=128
   - trying ngf=64, ndf=32
   - trying ngf=ndf=64 but switching ReLU in Generator to LeakyReLU
-These all didn't provide good results or completely diverged, but the closest to something reasonable was switching to LeakyReLU in the Generator. It's possible for the above larger network, larger ngf/ndf settings, we would need to train much more than 25 epochs but I didn't visually see reasonable movement in sample quality after 25 epochs so I opted to abandon this direction.
+
+but these all didn't provide good results or completely diverged, but the closest to something reasonable was switching to LeakyReLU in the Generator. It's possible for the above larger network, larger ngf/ndf settings, we would need to train much more than 25 epochs but I didn't visually see reasonable movement in sample quality after 25 epochs so I opted to abandon this direction.
 
 Training with LeakyReLU longer could work, might be time to switch to a more modern GAN codebase with flexibility to do a lot more things like data augs, new losses, all the various tricks that people have found over the years with GANs. Last attempt to make it work on 128x128 was:
   - ngf=ndf=64, LeakyReLU in Generator, nz=200
+
 but this didn't look good either.
 
 This is a solid baseline model, and the code is very simple so it can be adapted and modified quite easily and works fairly well on 64x64 patches on small and large data. Time to move on to something fancier.
