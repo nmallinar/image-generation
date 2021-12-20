@@ -16,7 +16,7 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
-from models.dcgan_base import Generator, Discriminator
+from models.dcgan_base import Generator64, Discriminator64, Generator128, Discriminator128
 from datasets import get_default_datasets
 
 parser = argparse.ArgumentParser()
@@ -89,14 +89,14 @@ def weights_init(m):
         torch.nn.init.zeros_(m.bias)
 
 
-netG = Generator(nz, ngf, nc, ngpu).to(device)
+netG = Generator128(nz, ngf, nc, ngpu).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 print(netG)
 
 
-netD = Discriminator(nc, ndf, ngpu).to(device)
+netD = Discriminator128(nc, ndf, ngpu).to(device)
 netD.apply(weights_init)
 if opt.netD != '':
     netD.load_state_dict(torch.load(opt.netD))
