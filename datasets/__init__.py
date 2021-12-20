@@ -1,3 +1,7 @@
+import torchvision.datasets as dset
+import torchvision.transforms as transforms
+
+
 def get_default_datasets(dataset, dataroot, imageSize, classes):
     if dataroot is None and str(dataset).lower() != 'fake':
         raise ValueError("`dataroot` parameter is required for dataset \"%s\"" % dataset)
