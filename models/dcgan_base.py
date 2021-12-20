@@ -13,7 +13,7 @@ class Generator128(nn.Module):
             nn.BatchNorm2d(ngf * 16),
             nn.ReLU(True),
             # state size. (ngf*16) x 4 x 4
-            nn.ConvTranspose2d(     ngf * 16, ngf * 8, 4, 1, 0, bias=False),
+            nn.ConvTranspose2d(     ngf * 16, ngf * 8, 4, 2, 0, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
             # state size. (ngf*8) x 8 x 8
