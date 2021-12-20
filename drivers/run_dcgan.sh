@@ -13,7 +13,8 @@ PYTHONPATH=.. python main.py \
   --ngf 64 \
   --ndf 64 \
   --niter 25 \
-  --lr 0.0002 \
+  --lr_disc 0.00005 \
+  --lr_gen 0.0002 \
   --beta1 0.5 \
   --cuda \
   --ngpu 2 \
