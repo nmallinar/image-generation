@@ -180,5 +180,5 @@ for epoch in range(opt.niter):
         torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (models_outdir, epoch+1))
         torch.save(netD.state_dict(), '%s/netD_epoch_%d.pth' % (models_outdir, epoch+1))
 
-torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir, epoch))
-torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir, epoch))
+torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir))
+torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir))
