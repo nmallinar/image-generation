@@ -1,19 +1,19 @@
 #!/bin/sh
 
 DATAROOT=/media/WD2TB/neil/data/Humans
-OUTPATH=/media/WD2TB/neil/dcgan_results/0002
+OUTPATH=/media/WD2TB/neil/dcgan_results/0004
 
 PYTHONPATH=.. python main.py \
   --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \
   --batchSize 64 \
-  --imageSize 128 \
+  --imageSize 64 \
   --nz 100 \
   --ngf 64 \
   --ndf 64 \
   --niter 25 \
-  --lr_disc 0.00005 \
+  --lr_disc 0.0002 \
   --lr_gen 0.0002 \
   --beta1 0.5 \
   --cuda \
