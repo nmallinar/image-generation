@@ -7,9 +7,8 @@ PYTHONPATH=.. python main.py \
   --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \
-  --batchSize 256 \
+  --batchSize 64 \
   --imageSize 128 \
-  --dry-run \
   --nz 100 \
   --ngf 64 \
   --ndf 64 \
@@ -20,4 +19,4 @@ PYTHONPATH=.. python main.py \
   --ngpu 2 \
   --outf $OUTPATH \
   --model-save-freq 10 \
-  --image-save-freq 20
+  --image-save-freq 100
