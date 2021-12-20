@@ -4,7 +4,6 @@ DATAROOT=/media/WD2TB/neil/data/Humans
 OUTPATH=/media/WD2TB/neil/dcgan_results
 
 PYTHONPATH=.. python main.py \
-  --dry-run \
   --dataset "folder" \
   --dataroot $DATAROOT \
   --workers 4 \

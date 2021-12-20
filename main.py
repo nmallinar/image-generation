@@ -85,7 +85,7 @@ def weights_init(m):
         torch.nn.init.zeros_(m.bias)
 
 
-netG = Generator(nz, ngf, ngpu).to(device)
+netG = Generator(nz, ngf, nc, ngpu).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
@@ -170,5 +170,5 @@ for epoch in range(opt.niter):
         torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (models_outdir, epoch))
         torch.save(netD.state_dict(), '%s/netD_epoch_%d.pth' % (models_outdir, epoch))
 
-torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir, epoch))
-torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir, epoch))
+torch.save(netG.state_dict(), '%s/netG_final.pth' % (models_outdir))
+torch.save(netD.state_dict(), '%s/netD_final.pth' % (models_outdir))

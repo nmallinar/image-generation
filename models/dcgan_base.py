@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.nn.parallel
 
 class Generator(nn.Module):
-    def __init__(self, nz, ngf, ngpu):
+    def __init__(self, nz, ngf, nc, ngpu):
         super(Generator, self).__init__()
         self.ngpu = ngpu
         self.nz = nz
