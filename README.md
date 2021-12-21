@@ -1,6 +1,12 @@
 # image-generation
 exploring various models and training regimes for image generation, text-to-image generation, style transfer, etc
 
+## lightweight_gan
+
+### debugging
+
+If there is an issue with kornia filter2d, look at: `https://github.com/lucidrains/lightweight-gan/issues/90`
+
 ## dcgan
 
 ### running

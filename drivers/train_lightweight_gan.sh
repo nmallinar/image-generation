@@ -3,7 +3,7 @@
 
 DATAROOT=/media/WD2TB/neil/data/Humans/face
 OUTPATH=/media/WD2TB/neil/lightweight_gan_results/
-EXP_CODE=0000
+EXP_CODE="0000"
 
 lightweight_gan --data $DATAROOT \
   --image-size 128 \
