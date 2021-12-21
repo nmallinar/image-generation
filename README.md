@@ -5,7 +5,15 @@ exploring various models and training regimes for image generation, text-to-imag
 
 ### debugging
 
-If there is an issue with kornia filter2d, look at: `https://github.com/lucidrains/lightweight-gan/issues/90`
+If there is an issue with kornia filter2d, look at: `https://github.com/lucidrains/lightweight-gan/issues/90`.
+
+You may want to go into installed packages for lightweight_gan and modify `lib/python3.*/site-packages/lightweight_gan/lightweight_gan.py`. Search for `'find_unused_parameters': True` and set this to `False`. This may speed things up.
+
+### experiment notes
+
+0000: batch-size 64, no grad accumulation, 128x128 images, aug-prob 0.25, aug ["translation", "cutout", "color"], using two GPUs (mem on GPU1 = 8.8GB, GPU2 = 8GB), disc-output-size 1
+  - runtime progress bar: 4592/200000 [1:19:48<56:35:52,  1.04s/it]
+
 
 ## dcgan
 
