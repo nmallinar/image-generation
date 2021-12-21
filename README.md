@@ -50,3 +50,8 @@ Training with LeakyReLU longer could work, might be time to switch to a more mod
 but this didn't look good either.
 
 This is a solid baseline model, and the code is very simple so it can be adapted and modified quite easily and works fairly well on 64x64 patches on small and large data. Time to move on to something fancier.
+
+If we return to this direction, we shoudl try:
+- data augmentations
+- loner training time
+- more training data
