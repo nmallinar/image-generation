@@ -47,7 +47,7 @@ parser.add_argument('--grad_accumulate', default=1, type=int, help='gradient acc
 parser.add_argument('--use_spectral_norm', default=False, action='store_true', help='use spectral normalization on Conv2d and ConvTranspose2d layers')
 parser.add_argument('--act_fn', default='leaky_relu', help='[relu | leaky_relu | selu]')
 parser.add_argument('--leaky_relu_slope', default=0.2, type=float, help='value of negative slope if using LeakyReLU activation function')
-parser.add_argument('--use_convtranspose2d', default=False, help='if not, uses Conv2d and Upsample2d')
+parser.add_argument('--use_convtranspose2d', default=False, action='store_true', help='if not, uses Conv2d and Upsample2d')
 
 opt = parser.parse_args()
 print(opt)
