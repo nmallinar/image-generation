@@ -1,7 +1,7 @@
 import torch.nn as nn
 from torch.nn.utils import spectral_norm
 import torch.nn.parallel
-from math import log2
+from math import log2, pow
 
 def SpectralConvTranspose2d(use_spectral_norm, *args, **kwargs):
     if use_spectral_norm:
@@ -16,7 +16,7 @@ def SpectralConv2d(use_spectral_norm, *args, **kwargs):
         return nn.Conv2d(*args, **kwargs)
 
 class Generator(nn.Module):
-    def __init__(self, nz, ngf, nc, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='relu',
+    def __init__(self, nz, ngf, nc, ngpu, image_size=64, leaky_relu_slope=0.1, act_fn='relu',
                  use_spectral_norm=False):
         super(Generator, self).__init__()
         self.ngpu = ngpu
@@ -31,11 +31,11 @@ class Generator(nn.Module):
         curr_in_fmaps = nz
         for idx in range(num_layers-1, -1, -1):
             if idx == num_layers-1:
-                modules.append(SpectralConvTranspose2d(use_spectral_norm, curr_in_fmaps, ngf * (2^idx), 4, 1, 0, bias=False))
+                modules.append(SpectralConvTranspose2d(use_spectral_norm, curr_in_fmaps, ngf * int(pow(2, idx)), 4, 1, 0, bias=False))
             else:
-                modules.append(SpectralConvTranspose2d(use_spectral_norm, curr_in_fmaps, ngf * (2^idx), 4, 2, 1, bias=False))
+                modules.append(SpectralConvTranspose2d(use_spectral_norm, curr_in_fmaps, ngf * int(pow(2, idx)), 4, 2, 1, bias=False))
 
-            modules.append(nn.BatchNorm2d(ngf * (2^idx)))
+            modules.append(nn.BatchNorm2d(ngf * int(pow(2, idx))))
 
             if act_fn == 'leaky_relu':
                 modules.append(nn.LeakyReLU(leaky_relu_slope, inplace=True))
@@ -46,7 +46,7 @@ class Generator(nn.Module):
             else:
                 raise ValueError(f'act_fn: {act_fn} is invalid.')
 
-            curr_in_fmaps = ngf * (2^idx)
+            curr_in_fmaps = ngf * int(pow(2, idx))
 
         modules += [
             SpectralConvTranspose2d(use_spectral_norm, curr_in_fmaps, nc, 4, 2, 1, bias=False),
@@ -63,7 +63,7 @@ class Generator(nn.Module):
         return output
 
 class Discriminator(nn.Module):
-    def __init__(self, nc, ndf, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='leaky_relu',
+    def __init__(self, nc, ndf, ngpu, image_size=64, leaky_relu_slope=0.1, act_fn='leaky_relu',
                  use_spectral_norm=False):
         super(Discriminator, self).__init__()
         self.ngpu = ngpu
@@ -78,11 +78,11 @@ class Discriminator(nn.Module):
         curr_in_fmaps = nc
         for idx in range(0, num_layers):
             if idx == 0:
-                modules.append(SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*(2^idx), 4, 2, 1, bias=False))
+                modules.append(SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 4, 2, 1, bias=False))
             else:
                 modules += [
-                    SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*(2^idx), 4, 2, 1, bias=False),
-                    nn.BatchNorm2d(ndf * (2^idx))
+                    SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 4, 2, 1, bias=False),
+                    nn.BatchNorm2d(ndf * int(pow(2, idx)))
                 ]
 
             if act_fn == 'leaky_relu':
@@ -92,7 +92,7 @@ class Discriminator(nn.Module):
             else:
                 raise ValueError(f'act_fn: {act_fn} is invalid.')
 
-            curr_in_fmaps = ndf*(2^idx)
+            curr_in_fmaps = ndf*int(pow(2, idx))
 
         modules += [
             SpectralConv2d(use_spectral_norm, curr_in_fmaps, 1, 4, 1, 0, bias=False),
