@@ -155,7 +155,7 @@ for epoch in range(opt.niter):
         D_G_z1 = output.mean().item()
         errD = errD_real + errD_fake
 
-        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)):
+        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)) or opt.grad_accumulate == 1:
             optimizerD.step()
 
         ############################
@@ -172,7 +172,7 @@ for epoch in range(opt.niter):
         errG.backward()
         D_G_z2 = output.mean().item()
 
-        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)):
+        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)) or opt.grad_accumulate == 1:
             optimizerG.step()
 
         print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'
