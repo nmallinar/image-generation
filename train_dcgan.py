@@ -47,6 +47,7 @@ parser.add_argument('--grad_accumulate', default=1, type=int, help='gradient acc
 parser.add_argument('--use_spectral_norm', default=False, action='store_true', help='use spectral normalization on Conv2d and ConvTranspose2d layers')
 parser.add_argument('--act_fn', default='leaky_relu', help='[relu | leaky_relu | selu]')
 parser.add_argument('--leaky_relu_slope', default=0.2, type=float, help='value of negative slope if using LeakyReLU activation function')
+parser.add_argument('--use_convtranspose2d', default=False, help='if not, uses Conv2d and Upsample2d')
 
 opt = parser.parse_args()
 print(opt)
@@ -96,7 +97,7 @@ def weights_init(m):
 
 netG = Generator(nz, ngf, nc, ngpu, image_size=opt.imageSize,
                  leaky_relu_slope=opt.leaky_relu_slope, act_fn=opt.act_fn,
-                 use_spectral_norm=opt.use_spectral_norm).to(device)
+                 use_spectral_norm=opt.use_spectral_norm, use_convtranspose2d=opt.use_convtranspose2d).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
