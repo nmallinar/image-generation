@@ -16,7 +16,7 @@ def SpectralConv2d(use_spectral_norm, *args, **kwargs):
         return nn.Conv2d(*args, **kwargs)
 
 class Generator(nn.Module):
-    def __init__(self, nz, ngf, nc, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='leaky_relu',
+    def __init__(self, nz, ngf, nc, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='relu',
                  use_spectral_norm=False):
         super(Generator, self).__init__()
         self.ngpu = ngpu
@@ -41,6 +41,8 @@ class Generator(nn.Module):
                 modules.append(nn.LeakyReLU(leaky_relu_slope, inplace=True))
             elif act_fn == 'selu':
                 modules.append(nn.SELU(inplace=True))
+            elif act_fn == 'relu':
+                modules.append(nn.ReLU(inplace=True))
             else:
                 raise ValueError(f'act_fn: {act_fn} is invalid.')
 
