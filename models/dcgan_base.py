@@ -42,7 +42,7 @@ class Generator(nn.Module):
             if idx == num_layers-1:
                 modules += get_upsample_layer(use_spectral_norm, use_convtranspose2d, curr_in_fmaps, ngf * int(pow(2, idx)), 3, 1, 0, bias=False)
             else:
-                modules += get_upsample_layer(use_spectral_norm, use_convtranspose2d, curr_in_fmaps, ngf * int(pow(2, idx)), 3, 2, 1, bias=False)
+                modules += get_upsample_layer(use_spectral_norm, use_convtranspose2d, curr_in_fmaps, ngf * int(pow(2, idx)), 3, 1, 1, bias=False)
 
             modules.append(nn.BatchNorm2d(ngf * int(pow(2, idx))))
 
@@ -57,7 +57,7 @@ class Generator(nn.Module):
 
             curr_in_fmaps = ngf * int(pow(2, idx))
 
-        modules += get_upsample_layer(use_spectral_norm, use_convtranspose2d, curr_in_fmaps, nc, 3, 2, 1, bias=False)
+        modules += get_upsample_layer(use_spectral_norm, use_convtranspose2d, curr_in_fmaps, nc, 3, 1, 1, bias=False)
         modules += [nn.Tanh()]
 
         self.main = nn.Sequential(*modules)
@@ -85,10 +85,10 @@ class Discriminator(nn.Module):
         curr_in_fmaps = nc
         for idx in range(0, num_layers):
             if idx == 0:
-                modules.append(SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 3, 2, 1, bias=False))
+                modules.append(SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 3, 1, 1, bias=False))
             else:
                 modules += [
-                    SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 3, 2, 1, bias=False),
+                    SpectralConv2d(use_spectral_norm, curr_in_fmaps, ndf*int(pow(2, idx)), 3, 1, 1, bias=False),
                     nn.BatchNorm2d(ndf * int(pow(2, idx)))
                 ]
 
