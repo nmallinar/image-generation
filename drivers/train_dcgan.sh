@@ -21,4 +21,5 @@ PYTHONPATH=.. python ../train_dcgan.py \
   --outf $OUTPATH \
   --model-save-freq 10 \
   --image-save-freq 10 \
-  --grad_accumulate 1
+  --grad_accumulate 1 \
+  --use_spectral_norm

@@ -44,6 +44,7 @@ parser.add_argument('--image-save-freq', type=int, dest='image_save_freq', defau
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--classes', default='bedroom', help='comma separated list of classes for the lsun data set')
 parser.add_argument('--grad_accumulate', default=1, type=int, help='gradient accumulation factor in train steps')
+parser.add_argument('--use_spectral_norm', default=False, action='store_true', help='use spectral normalization on Conv2d and ConvTranspose2d layers')
 
 opt = parser.parse_args()
 print(opt)
@@ -92,7 +93,8 @@ def weights_init(m):
 
 
 netG = Generator(nz, ngf, nc, ngpu, image_size=opt.imageSize,
-                 leaky_relu_slope=0.2, act_fn='leaky_relu').to(device)
+                 leaky_relu_slope=0.2, act_fn='leaky_relu',
+                 use_spectral_norm=opt.use_spectral_norm).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
@@ -100,7 +102,8 @@ print(netG)
 
 
 netD = Discriminator(nc, ndf, ngpu, image_size=opt.imageSize,
-                     leaky_relu_slope=0.2, act_fn='leaky_relu').to(device)
+                     leaky_relu_slope=0.2, act_fn='leaky_relu',
+                     use_spectral_norm=opt.use_spectral_norm).to(device)
 netD.apply(weights_init)
 
 if opt.netD != '':
