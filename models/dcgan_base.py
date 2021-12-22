@@ -89,6 +89,8 @@ class Discriminator(nn.Module):
                 modules.append(nn.LeakyReLU(leaky_relu_slope, inplace=True))
             elif act_fn == 'selu':
                 modules.append(nn.SELU(inplace=True))
+            elif act_fn == 'relu':
+                modules.append(nn.ReLU(inplace=True))
             else:
                 raise ValueError(f'act_fn: {act_fn} is invalid.')
 

@@ -22,4 +22,6 @@ PYTHONPATH=.. python ../train_dcgan.py \
   --model-save-freq 10 \
   --image-save-freq 10 \
   --grad_accumulate 1 \
-  --use_spectral_norm
+  --use_spectral_norm \
+  --act_fn leaky_relu \
+  --leaky_relu_slope 0.1
