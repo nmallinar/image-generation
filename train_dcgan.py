@@ -16,7 +16,7 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
-from models.dcgan_base import Generator64, Discriminator64, Generator128, Discriminator128
+from models.dcgan_base import Generator, Discriminator
 from datasets import get_default_datasets
 
 parser = argparse.ArgumentParser()
@@ -43,6 +43,7 @@ parser.add_argument('--model-save-freq', type=int, dest='model_save_freq', defau
 parser.add_argument('--image-save-freq', type=int, dest='image_save_freq', default=100, help='frequency in batches per epoch to save image samples')
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--classes', default='bedroom', help='comma separated list of classes for the lsun data set')
+parser.add_argument('--grad_accumulate', default=1, type=int, help='gradient accumulation factor in train steps')
 
 opt = parser.parse_args()
 print(opt)
@@ -90,15 +91,18 @@ def weights_init(m):
         torch.nn.init.zeros_(m.bias)
 
 
-netG = Generator64(nz, ngf, nc, ngpu).to(device)
+netG = Generator(nz, ngf, nc, ngpu, image_size=opt.imageSize,
+                 leaky_relu_slope=0.2, act_fn='leaky_relu').to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 print(netG)
 
 
-netD = Discriminator64(nc, ndf, ngpu).to(device)
+netD = Discriminator(nc, ndf, ngpu, image_size=opt.imageSize,
+                     leaky_relu_slope=0.2, act_fn='leaky_relu').to(device)
 netD.apply(weights_init)
+
 if opt.netD != '':
     netD.load_state_dict(torch.load(opt.netD))
 print(netD)
@@ -130,6 +134,10 @@ for epoch in range(opt.niter):
 
         output = netD(real_cpu)
         errD_real = criterion(output, label)
+
+        if opt.grad_accumulate > 1:
+            errD_real = errD_real / opt.grad_accumulate
+
         errD_real.backward()
         D_x = output.mean().item()
 
@@ -139,10 +147,16 @@ for epoch in range(opt.niter):
         label.fill_(fake_label)
         output = netD(fake.detach())
         errD_fake = criterion(output, label)
+
+        if opt.grad_accumulate > 1:
+            errD_fake = errD_fake / opt.grad_accumulate
+
         errD_fake.backward()
         D_G_z1 = output.mean().item()
         errD = errD_real + errD_fake
-        optimizerD.step()
+
+        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)):
+            optimizerD.step()
 
         ############################
         # (2) Update G network: maximize log(D(G(z)))
@@ -151,9 +165,15 @@ for epoch in range(opt.niter):
         label.fill_(real_label)  # fake labels are real for generator cost
         output = netD(fake)
         errG = criterion(output, label)
+
+        if opt.grad_accumulate > 1:
+            errG = errG / opt.grad_accumulate
+
         errG.backward()
         D_G_z2 = output.mean().item()
-        optimizerG.step()
+
+        if ((i+1) % opt.grad_accumulate == 0) or (i+1 == len(dataloader)):
+            optimizerG.step()
 
         print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'
               % (epoch, opt.niter, i, len(dataloader),
