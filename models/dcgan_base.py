@@ -20,8 +20,8 @@ def get_upsample_layer(use_spectral_norm, use_convtranspose2d, *args, **kwargs):
         return [SpectralConvTranspose2d(use_spectral_norm, *args, **kwargs)]
     else:
         return [
-            SpectralConv2d(use_spectral_norm, *args, **kwargs),
-            nn.Upsample(scale_factor=2, mode='nearest')
+            nn.Upsample(scale_factor=2, mode='nearest'),
+            SpectralConv2d(use_spectral_norm, *args, **kwargs)
         ]
 
 class Generator(nn.Module):
