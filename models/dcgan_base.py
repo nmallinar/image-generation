@@ -18,13 +18,14 @@ def SpectralConv2d(use_spectral_norm, *args, **kwargs):
 class Generator(nn.Module):
     def __init__(self, nz, ngf, nc, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='leaky_relu',
                  use_spectral_norm=False):
-        super(Generator128, self).__init__()
+        super(Generator, self).__init__()
         self.ngpu = ngpu
         self.nz = nz
         self.ngf = ngf
         modules = []
         resolution = log2(image_size)
-        assert isinstance(resolution, int)
+        assert resolution.is_integer()
+        resolution = int(resolution)
 
         num_layers = resolution - 2
         curr_in_fmaps = nz
@@ -61,14 +62,15 @@ class Generator(nn.Module):
 
 class Discriminator(nn.Module):
     def __init__(self, nc, ndf, ngpu, image_size=64, leaky_relu_slope=0.2, act_fn='leaky_relu',
-                 use_spectral_norm=True):
-        super(Discriminator128, self).__init__()
+                 use_spectral_norm=False):
+        super(Discriminator, self).__init__()
         self.ngpu = ngpu
         self.nc = nc
         self.ndf = ndf
         modules = []
         resolution = log2(image_size)
-        assert isinstance(resolution, int)
+        assert resolution.is_integer()
+        resolution = int(resolution)
 
         num_layers = resolution - 2
         curr_in_fmaps = nc
