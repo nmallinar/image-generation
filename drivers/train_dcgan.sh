@@ -9,11 +9,11 @@ PYTHONPATH=.. python ../train_dcgan.py \
   --workers 4 \
   --batchSize 64 \
   --imageSize 64 \
-  --nz 128 \
+  --nz 100 \
   --ngf 64 \
   --ndf 64 \
   --niter 25 \
-  --lr_disc 0.00005 \
+  --lr_disc 0.0002 \
   --lr_gen 0.0002 \
   --beta1 0.5 \
   --cuda \
